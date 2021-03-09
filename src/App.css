@@ -10,8 +10,33 @@
     margin-top: calc(60vh - 50px);
 }
 
+.added-countries
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    width: 800px;
+    height: 200px;
+
+    overflow: hidden;
+
+    margin-top: calc(100vh - 250px);
+    margin-left: calc(50vw - 400px);
+
+
+    background-color: rgba(79, 79, 79, 0.8);
+}
+
+
 @media (max-height: 900px) {
     .add-btn{
         margin-top: calc(60vh - 80px);
+    }
+    .added-countries
+    {
+        height: 100px;
+        margin-top: calc(100vh - 175px);
     }
 }

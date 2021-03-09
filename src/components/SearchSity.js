@@ -1,11 +1,13 @@
 import React from 'react';
+
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+
+
 
 const SearchBar = styled.form`
   position: absolute;
   width: 500px;
-  transition: 0.8s 0.5s;
   margin-left: calc(50vw - 250px)
 `;
 

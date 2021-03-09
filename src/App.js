@@ -1,17 +1,19 @@
 import React from 'react';
+
 import styled from 'styled-components';
 import SearchCity from "./components/SearchSity";
-import './App.css'
 import Result from "./components/Result";
-import Added from "./components/Added";
-import axios from "axios";
 import {Button} from "@shopify/polaris";
+import CountryCard from "./components/CountryCard";
+
+import './App.css'
+
 
 
 const AppTitle = styled.h1`
-  display: block;
+  display: flex;
+  justify-content:center;
   height: 64px;
-  margin: 0;
   padding: 20px 0;
   font-size: 20px;
   text-transform: uppercase;
@@ -30,8 +32,6 @@ const AppTitle = styled.h1`
     top: 20%;
     text-align: center;
     transition: .5s;
-
-    
   `}
   ${({ showResult }) =>
     showResult &&
@@ -42,7 +42,6 @@ const AppTitle = styled.h1`
   `}
 `;
 
-let nameError = false;
 
 class App extends React.Component {
     state = {
@@ -50,8 +49,6 @@ class App extends React.Component {
         city: '',
         date: '',
         temp: '',
-        forecast: '',
-        error: false,
         restored: [],
     };
 
@@ -61,6 +58,7 @@ class App extends React.Component {
         });
     };
 
+
     handleSearchCity = e => {
         e.preventDefault();
         const { value } = this.state;
@@ -68,7 +66,6 @@ class App extends React.Component {
 
         const weather = `https://api.openweathermap.org/data/2.5/weather?q=${value}&APPID=${APIkey}&units=metric`;
         const forecast = `https://api.openweathermap.org/data/2.5/forecast?q=${value}&APPID=${APIkey}&units=metric`;
-
 
         Promise.all([fetch(weather), fetch(forecast)])
             .then(([res1, res2]) => {
@@ -98,7 +95,6 @@ class App extends React.Component {
                     months[currentDate.getMonth()]
                 }`;
 
-
                 const city = data1.name;
                 const forecast = data2.list;
                 const temp = data1.main.temp;
@@ -120,32 +116,45 @@ class App extends React.Component {
             temp: this.state.temp,
         };
 
+        let cityArr = [];
+
+        let restoredCityArr = JSON.parse(localStorage.getItem('cityArr'));
+
+        let cityArr1 = [];
+
+        this.setState(state => ({
+            rendered: false,
+        }))
 
 
-            let cityArr = [];
+        for(let m = 0; m < restoredCityArr.length; m++){
+            cityArr.push(restoredCityArr[m]);
+            cityArr1 = cityArr;
+        }
 
-            let restoredCityArr = JSON.parse(localStorage.getItem('cityArr'));
-
-            for(let m = 0; m < restoredCityArr.length; m++){
-                cityArr.push(restoredCityArr[m]);
-            }
-
-            if(cityArr.length !== 0){
-                for(let i = 0; i < cityArr.length; i++){
-                    if(cityArr[i].name === this.state.city){
-                        cityArr.splice(i, 1);
-                    }
+        if(cityArr.length !== 0){
+            for(let i = 0; i < cityArr.length; i++){
+                if(cityArr[i].name === this.state.city){
+                    cityArr.splice(i, 1);
                 }
             }
+        }
 
-            cityArr.push(cityCardInfo)
+        cityArr.push(cityCardInfo)
 
-            if(cityArr.length > 5){
-                cityArr.splice(0, 1);
+        if(cityArr.length > 5){
+            cityArr.splice(0, 1);
+        }
+
+        for(let k = 0; k < cityArr1.length; k++){
+            if(cityArr1[k].name !== cityArr[k].name){
+                this.setState(state => ({
+                    rendered: !state.rendered,
+                }))
             }
+        }
 
-
-            localStorage.setItem('cityArr', JSON.stringify(cityArr))
+        localStorage.setItem('cityArr', JSON.stringify(cityArr))
 
     }
 
@@ -156,20 +165,30 @@ class App extends React.Component {
         return (
             <>
                 <div className="App">
-                    {this.state.restored && this.state.restored.length !== 0 &&<Added
-                        restored={this.state.restored}
-                    />}
-                    {this.state.city && this.state.date && this.state.temp ? <Result
+                    <div className="added-countries">
+                        {this.state.restored.map((obj) =>
+                            <CountryCard
+                                city={obj.name}
+                                temp={obj.temp}
+                            />)}
+                    </div>
+
+                    {this.state.city && this.state.date && this.state.temp && <Result
                         city={this.state.city}
                         date={this.state.date}
                         temp={this.state.temp}
-                    /> : <h1> Error </h1>}
+                    />}
+
+                    {this.state.error && <h1 className="error">Error</h1>}
+
                     <AppTitle showLabel={(weatherInfo || error) && true}>Weather app</AppTitle>
 
-                        <AppTitle secondary showResult={(weatherInfo || error) && true}>
+                        <AppTitle
+                            secondary
+                            showResult={(weatherInfo || error) && true
+                            }>
                             Weather app
                         </AppTitle>
-
 
                         <SearchCity
                             value={value}
@@ -178,7 +197,10 @@ class App extends React.Component {
                         />
 
                     {this.state.city && this.state.date && this.state.temp && <div className="add-btn">
-                        <Button onClick={this.handleButtonClicked}>Add country</Button>
+                        <Button
+                            onClick={this.handleButtonClicked}
+                        >Add country
+                        </Button>
                     </div>}
                 </div>
             </>

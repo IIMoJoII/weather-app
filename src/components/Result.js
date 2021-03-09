@@ -1,8 +1,8 @@
 import React from 'react';
 
 import '../styles/Result.css'
-import {Button} from "@shopify/polaris";
 import "@shopify/polaris/dist/styles.css";
+
 
 
 const Result = ({city, date, temp}) => {
