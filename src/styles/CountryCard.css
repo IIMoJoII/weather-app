@@ -1,0 +1,29 @@
+.country-card{
+    display: flex;
+    flex-direction: column;
+    height: 180px;
+    background-color: rgba(186, 186, 186, 0.6);
+    justify-content: center;
+    align-items: center;
+
+    margin-left: 10px;
+    width: 148px;
+    flex-wrap: wrap;
+}
+
+.country-card h1{
+    font-size: 20px;
+    color: white;
+}
+
+.country-card p{
+    margin-top: 20px;
+    font-size: 20px;
+    color: white;
+}
+
+@media (max-height: 900px) {
+    .country-card{
+        height: 87px;
+    }
+}

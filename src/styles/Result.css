@@ -1,0 +1,48 @@
+.result{
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+    box-sizing: border-box;
+    border-radius: 20px;
+
+    width: 500px;
+    height: 300px;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: calc(100vw/2 - 250px);
+    margin-top: calc(100vh/2 - 150px);
+    z-index: 2;
+
+    background-color: rgba(186, 186, 186, 0.6);
+}
+
+.result__info{
+    margin-top: 20px;
+}
+
+.result__info h1{
+    font-size: 40px;
+}
+
+.result__info h2{
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+.result__weather h1{
+    font-size: 50px;
+    margin-top: 20px;
+}
+
+.result__weather p{
+    font-size: 25px;
+    margin-top: 20px;
+}
+
+@media (max-height: 900px) {
+    .result{
+        height: 200px;
+        margin-top: calc(100vh/2 - 100px);
+    }
+}
