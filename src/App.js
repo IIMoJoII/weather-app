@@ -156,11 +156,13 @@ class App extends React.Component {
 
         localStorage.setItem('cityArr', JSON.stringify(cityArr))
 
+        this.setState(state => ({
+            restored: JSON.parse(localStorage.getItem('cityArr')),
+        }))
     }
 
     render() {
         const { value, weatherInfo, error } = this.state;
-        this.state.restored = JSON.parse(localStorage.getItem('cityArr'));
 
         return (
             <>
