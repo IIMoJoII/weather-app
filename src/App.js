@@ -45,11 +45,12 @@ const AppTitle = styled.h1`
 
 class App extends React.Component {
     state = {
+        id: null,
         value: '',
         city: '',
         date: '',
         temp: '',
-        restored: [],
+        restored: JSON.parse(localStorage.getItem('cityArr')),
     };
 
     handleInputChange = e => {
@@ -61,6 +62,7 @@ class App extends React.Component {
 
     handleSearchCity = e => {
         e.preventDefault();
+
         const { value } = this.state;
         const APIkey = "6369a181be0b4aaa1f423382a1b781c2";
 
@@ -104,6 +106,7 @@ class App extends React.Component {
                     forecast: forecast,
                     temp: temp,
                     date: date,
+                    id: data1.id
                 });
             });
     };
@@ -112,53 +115,50 @@ class App extends React.Component {
         e.preventDefault();
 
         let cityCardInfo = {
+            id: this.state.id,
             name: this.state.city,
             temp: this.state.temp,
         };
 
-        let cityArr = [];
+        if(localStorage.getItem('cityArr') === null)
+            localStorage.setItem('cityArr', JSON.stringify([]))
 
         let restoredCityArr = JSON.parse(localStorage.getItem('cityArr'));
 
-        let cityArr1 = [];
+        if(restoredCityArr.length !== 0){
+            let canAddCity = false;
 
-        this.setState(state => ({
-            rendered: false,
-        }))
-
-
-        for(let m = 0; m < restoredCityArr.length; m++){
-            cityArr.push(restoredCityArr[m]);
-            cityArr1 = cityArr;
-        }
-
-        if(cityArr.length !== 0){
-            for(let i = 0; i < cityArr.length; i++){
-                if(cityArr[i].name === this.state.city){
-                    cityArr.splice(i, 1);
+            for(let i = 0; i < restoredCityArr.length; i++){
+                if (restoredCityArr[i].name !== cityCardInfo.name){
+                    canAddCity = true;
+                } else {
+                    canAddCity = false;
                 }
             }
-        }
 
-        cityArr.push(cityCardInfo)
+            if(canAddCity){
+                restoredCityArr.push(cityCardInfo);
 
-        if(cityArr.length > 5){
-            cityArr.splice(0, 1);
-        }
+                if (restoredCityArr.length === 6) {
+                    restoredCityArr.splice(0, 1)
+                }
 
-        for(let k = 0; k < cityArr1.length; k++){
-            if(cityArr1[k].name !== cityArr[k].name){
-                this.setState(state => ({
-                    rendered: !state.rendered,
-                }))
+                localStorage.setItem('cityArr', JSON.stringify(restoredCityArr))
+
+                this.setState({
+                    restored: JSON.parse(localStorage.getItem('cityArr'))
+                });
             }
+        } else {
+            restoredCityArr.push(cityCardInfo);
+            console.log(restoredCityArr)
+
+            localStorage.setItem('cityArr', JSON.stringify(restoredCityArr))
+
+            this.setState({
+                restored: JSON.parse(localStorage.getItem('cityArr'))
+            });
         }
-
-        localStorage.setItem('cityArr', JSON.stringify(cityArr))
-
-        this.setState(state => ({
-            restored: JSON.parse(localStorage.getItem('cityArr')),
-        }))
     }
 
     render() {
@@ -167,13 +167,14 @@ class App extends React.Component {
         return (
             <>
                 <div className="App">
-                    <div className="added-countries">
+                    {this.state.restored && <div className="added-countries">
                         {this.state.restored.map((obj) =>
                             <CountryCard
+                                key={obj.id}
                                 city={obj.name}
                                 temp={obj.temp}
                             />)}
-                    </div>
+                    </div>}
 
                     {this.state.city && this.state.date && this.state.temp && <Result
                         city={this.state.city}
