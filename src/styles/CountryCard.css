@@ -28,3 +28,29 @@
         height: 87px;
     }
 }
+
+@media (max-height: 900px) {
+    .country-card{
+        height: 87px;
+    }
+}
+
+@media (max-width: 800px) {
+    .country-card{
+
+        width: 95px;
+        height: 40px;
+    }
+
+    .country-card h1{
+        font-size: 13px;
+        color: white;
+        max-width: 130px;
+    }
+
+    .country-card p{
+        margin-top: 0px;
+        font-size: 13px;
+        color: white;
+    }
+}

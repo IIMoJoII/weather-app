@@ -1,5 +1,7 @@
 .App{
     background-image: url("img/landscape.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
@@ -40,3 +42,24 @@
         margin-top: calc(100vh - 175px);
     }
 }
+
+
+@media (max-height: 700px) {
+    .add-btn{
+        margin-top: calc(60vh - 120px);
+    }
+}
+
+@media (max-width: 800px) {
+    .add-btn{
+        margin-top: calc(60vh - 120px);
+    }
+    .added-countries
+    {
+        height: 100px;
+        width: 325px;
+        margin-left: calc(50vw - 162px);
+        flex-wrap: wrap;
+    }
+}
+

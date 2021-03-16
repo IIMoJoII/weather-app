@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 const SearchBar = styled.form`
   position: absolute;
-  width: 500px;
+  width: 300px;
   margin-left: calc(50vw - 250px)
 `;
 
@@ -25,6 +25,10 @@ const SearchInput = styled.input`
     color: #191919;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     outline: none;
+  }
+  @media (max-width: 800px) {
+    width: 325px;
+    margin-left: 85px;
   }
 
 `;
